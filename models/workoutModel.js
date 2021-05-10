@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 const WkSchema = new Schema({
     day: {
-        type: Date
+        type: Date,
+        default: Date.now
     },
     exercises: [
         {
