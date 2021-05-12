@@ -54,7 +54,6 @@ app.post("/api/workouts", ({ body }, res) => {
         });
 });
 
-//route for range
 app.get("/api/workouts/range", (req, res) => {
     Workout.aggregate([{ $addFields: { totalDuration: { $sum: "$exercises.duration" } } }])
         .then((response) => {
