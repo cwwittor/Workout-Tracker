@@ -21,11 +21,14 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
     useFindAndModify: false
 }).catch((err) => console.log(err));
 
-
+//html route for main page
 app.get('/', (req, res) => { res.sendFile(path.join(__dirname, "./public/index.html"))});
+//html route for stats page
 app.get('/stats', (req, res) => { res.sendFile(path.join(__dirname, "./public/stats.html"))});
+//html route for exercise page
 app.get('/exercise', (req, res) => { res.sendFile(path.join(__dirname, "./public/exercise.html"))});
  
+
 app.put('/api/workouts/:id', ({ body, params }, res) => {
     Workout.findByIdAndUpdate(params.id, { $push: { exercises: body } }, { new: true, runValidators: true }).then((response) => {
         res.json(response)
@@ -34,16 +37,14 @@ app.put('/api/workouts/:id', ({ body, params }, res) => {
 });
 
 app.get("/api/workouts", (req, res) => {
-    Workout.aggregate([{ $addFields: { totalDuration: { $sum: '$exercises.duration' } } }])
+    Workout.aggregate([{ $addFields: { totalDuration: { $sum: "$exercises.duration" } } }])
         .then((response) => {
-            res.json(response)
+            res.json(response);
         })
 
 });
 
 app.post("/api/workouts", ({ body }, res) => {
-    // const workout = new Workout(body);
-
     Workout.create(body)
         .then(dbWorkout => {
             res.json(dbWorkout);
@@ -53,10 +54,11 @@ app.post("/api/workouts", ({ body }, res) => {
         });
 });
 
-app.get('/api/workouts/range', (req, res) => {
-    Workout.aggregate([{ $addFields: { totalDuration: { $sum: '$exercises.duration' } } }])
+//route for range
+app.get("/api/workouts/range", (req, res) => {
+    Workout.aggregate([{ $addFields: { totalDuration: { $sum: "$exercises.duration" } } }])
         .then((response) => {
-            res.json(response)
+            res.json(response);
         })
 });
 
