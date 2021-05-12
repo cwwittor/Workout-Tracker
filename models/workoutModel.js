@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+//Schema for the workout, seperated with a date and exercise
 const WkSchema = new Schema({
     day: {
         type: Date,
